@@ -21,10 +21,12 @@ const todosDB = function (toDosList) {
         }
     ]
 
+    const cloneObj = (obj) => JSON.parse(JSON.stringify(obj))
+
     const getAllToDos = async function () {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve(todos)
+                resolve(cloneObj(todos))
             }, 200)
         })
     }
@@ -37,14 +39,14 @@ const todosDB = function (toDosList) {
 
                 if (index === undefined) {
                     todos.push(todo)
-                    resolve(todos[todos.length - 1])
+                    resolve(cloneObj(todos[todos.length - 1]))
                 }
 
                 index < 0 ? index = Math.abs(todos.length - Math.abs(index) - 1) : null
 
                 if (index < todos.length) {
                     todos.splice(index, 0, todo)
-                    resolve(todos[index])
+                    resolve(cloneObj(todos[index]))
                 }
 
                 reject(new Error("invalid_index"))
@@ -53,11 +55,15 @@ const todosDB = function (toDosList) {
         })
     }
 
-    const getToDo = async function (index) {
+    const getToDo = async function (index, noClone) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 index < 0 ? index = Math.abs(todos.length - Math.abs(index) - 1) : null
-                resolve(todos[index] ?? null)
+                if (todos[index]) resolve(noClone ? todos[index] : cloneObj(todos[index]))
+                else {
+                    resolve(null)
+                }
+
             }, 200)
         })
     }
@@ -67,14 +73,14 @@ const todosDB = function (toDosList) {
             setTimeout(() => {
                 if (index === undefined) {
                     const oldTodo = todos.pop()
-                    resolve(oldTodo)
+                    resolve(cloneObj(oldTodo))
                 }
 
                 index < 0 ? index = Math.abs(todos.length - Math.abs(index) - 1) : null
 
                 if (index < todos.length) {
                     const removedToDo = todos.splice(index, 1)
-                    resolve(...removedToDo)
+                    resolve(cloneObj(...removedToDo))
                 }
 
                 reject(new Error("invalid_index"))
@@ -87,7 +93,7 @@ const todosDB = function (toDosList) {
 
         return new Promise(async (resolve, reject) => {
 
-            const toDo = await getToDo(index)
+            const toDo = await getToDo(index, true)
 
             if (toDo) {
                 const { title, description } = update
@@ -100,7 +106,7 @@ const todosDB = function (toDosList) {
                     toDo.description = description
                 }
 
-                resolve(toDo)
+                resolve(cloneObj(toDo))
             }
 
             reject(new Error("invalid_index"))
