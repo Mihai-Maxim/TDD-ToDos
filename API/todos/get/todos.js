@@ -4,7 +4,7 @@ export default async function getTodosHandler (req, res) {
 
     const allTodos = await dbConn.getAll()
     
-    res.json({
+    res.status(200).json({
         allTodos
     })
 }
