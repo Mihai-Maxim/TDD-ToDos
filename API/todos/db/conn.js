@@ -10,6 +10,14 @@ const todosDB = function (toDosList) {
         {
             title: "todo 2",
             description: "clean the room"
+        },
+        {
+            title: "todo 3",
+            description: "learn some tdd"
+        },
+        {
+            title: "todo 4",
+            description: "world domination"
         }
     ]
 
