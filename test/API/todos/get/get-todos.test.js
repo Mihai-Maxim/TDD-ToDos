@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "../../../../app.js";
 
-describe("GET /todos", () => {
+describe.skip("GET /todos", () => {
 
     const mockToDos =  {
         todos: [

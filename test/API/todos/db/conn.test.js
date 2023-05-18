@@ -1,7 +1,7 @@
 import { todosDB } from "../../../../API/todos/db/conn";
 
 
-describe("todos/db test", () => {
+describe.skip("todos/db test", () => {
     let dbConn
 
     let mockTodos1

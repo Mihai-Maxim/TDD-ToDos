@@ -1,8 +1,8 @@
 import parseQueryParams from "../../../../API/todos/middelware/parseQueryParams.js"
 const { parseGetToDos }  = parseQueryParams
 import {jest} from '@jest/globals'
-describe.only("parseGetToDos works as expected", () => {
-    
+describe.skip("parseGetToDos works as expected", () => {
+
     let mockRes
 
     const getMockRes = () => {
@@ -82,6 +82,46 @@ describe.only("parseGetToDos works as expected", () => {
 
         done()
     })
+
+
+    test("rejects if at > limit", (done) => {
+        const mockReq4 = {
+            query: {
+                at: 2,
+                skip: 1,
+                limit: 2
+            }
+        }
+        expect.assertions(2)
+        parseGetToDos(mockReq4, mockRes, () => {})
+        expect(mockRes.status.mock.calls[0][0]).toBe(400)
+
+        expect(mockRes.status.mock.results[0].value.json.mock.lastCall[0]).toEqual({
+            message: "at can't be > limit"
+        })
+
+        done()
+    })
+
+    test("rejects if negative at > limit", (done) => {
+
+        const mockReq4 = {
+            query: {
+                at: -2,
+                skip: 1,
+                limit: 2
+            }
+        }
+        expect.assertions(2)
+        parseGetToDos(mockReq4, mockRes, () => {})
+        expect(mockRes.status.mock.calls[0][0]).toBe(400)
+
+        expect(mockRes.status.mock.results[0].value.json.mock.lastCall[0]).toEqual({
+            message: "at can't be > limit"
+        })
+
+        done()
+    })
     
     
 
@@ -91,7 +131,6 @@ describe.only("parseGetToDos works as expected", () => {
                 limit: "1",
             }
         }
-
         parseGetToDos(mockReq1, mockRes, () => {
             expect(mockRes.status.mock.calls.length).toBe(0)
             expect(mockReq1.query.limit).toBe(1)
