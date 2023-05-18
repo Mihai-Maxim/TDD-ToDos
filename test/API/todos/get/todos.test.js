@@ -20,6 +20,14 @@ describe("GET /todos", () => {
         expect(response.status).toEqual(200);
     })
 
+    test("gets last todo", async () => {
+        const response = await request(app)
+        .get('/API/todos?at=last')
+        .set('Accept', 'application/json')
+        expect(response.body.todos).toEqual(mockToDos.todos[3])
+        expect(response.status).toEqual(200);
+    })
+
     test("gets todos with skip", async () => {
         const response = await request(app)
         .get('/API/todos?skip=2')
@@ -109,9 +117,5 @@ describe("GET /todos", () => {
 
 
     })
-
-
-
-
 
 })

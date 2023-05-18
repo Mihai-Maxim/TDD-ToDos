@@ -1,7 +1,7 @@
 import { todosDB } from "../../../../API/todos/db/conn";
 
 
-describe.only("todos/db test", () => {
+describe("todos/db test", () => {
     let dbConn
 
     let mockTodos1
